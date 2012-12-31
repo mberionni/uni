@@ -1,12 +1,14 @@
-University projects in Java
+#University projects in Java
+==============================
+###Year 1999-2000
 ==============================
 
 ## 	Lisp (scheme) interpreter
 #### Documentation and usage examples
-[docs](http://www-natali.deis.unibo.it/Linguaggi/Linguaggi99/Esami/BerionniMichele/RelazioneLisp.html), 
+[docs](http://www-natali.deis.unibo.it/Linguaggi/Linguaggi99/Esami/BerionniMichele/RelazioneLisp.html),
 [ex](http://www-natali.deis.unibo.it/Linguaggi/Linguaggi99/Esami/BerionniMichele/pagina2.html)
 
-The Interpeter is provided as an applet. 
+The Interpeter is provided as an applet.
 
 To run it you only need Interprete6.html and interprete6.jar
 
@@ -16,7 +18,6 @@ To run it you only need Interprete6.html and interprete6.jar
 [docs](http://www-natali.deis.unibo.it/Linguaggi/Linguaggi99/Esami/BerionniMichele/pagina1.html),
 [ex](http://www-natali.deis.unibo.it/Linguaggi/Linguaggi99/Esami/BerionniMichele/pagina3.html)
 
-The Interpeter is provided as an applet. 
+The Interpeter is provided as an applet.
 
-To run it you only need IntProlog.html and IntProlog.jar   	
-   
+To run it you only need IntProlog.html and IntProlog.jar
