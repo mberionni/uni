@@ -1,0 +1,129 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="it">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta name="GENERATOR" content="Microsoft FrontPage 4.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<title>Analisi - parte I</title>
+<meta name="Microsoft Theme" content="sumipntg 001, default">
+<meta name="Microsoft Border" content="tlb, default">
+<base target="_self">
+</head>
+
+<body topmargin="20" leftmargin="30" background="sumtextb.jpg" bgcolor="#FFFFFF" text="#000066" link="#3333CC" vlink="#666699" alink="#990099">
+
+<!--mstheme--><font face="Verdana, Arial, Helvetica">
+
+<p>La prima parte del progetto è consistita nella realizzazione di un
+interfaccia cliente che permetta all'utente di accedere ai servizi CORBA
+registrati nell'Interface Repository.</p>
+<p>L'idea è che tali servizi possano <i>registrarsi dinamicamente,</i> cioè<i>
+a run-time</i>; l'arrivo di nuovi servizi può essere scoperto attraverso il
+bottone di &quot;update&quot;. In alternativa o in aggiunta a questo si potrebbe
+pensare ad un thread che automaticamente va in esecuzione ad intervalli di tempo
+regolari effettuando l'update automaticamente, oppure si potrebbe pensare a dei
+servizi che notificano il loro arrivo.</p>
+<p>Riportiamo un'immagine dell'interfaccia:</p>
+<p align="center"><img border="0" src="analis3.jpg" width="710" height="612"></p>
+<p>L'interfaccia è&nbsp; completamente <b> trasparente</b> rispetto alla
+allocazione fisica dei servizi cui fornisce accesso, al linguaggio di
+programmazione con cui sono stati implementati i servizi, e al tipo di macchina
+su cui i servizi eseguono.</p>
+<p>La proprietà di <i>trasparenza dalla allocazione</i> viene ottenuta
+attraverso il <i>Naming Service</i> di CORBA.</p>
+<p>L'interfaccia visualizza i servizi che si sono registrati all'<i>Interface Repository</i>.</p>
+<p>Tali servizi sono visualizzati evidenziandone la struttura gerarchica
+attraverso un <i> JTree Java</i>.</p>
+<p>Nella figura si distinguono i <i> moduli</i> (DBService, BankService, PrintService,
+ProvaService) con le rispettive <i> interfacce</i> (che rappresentano oggetti CORBA -
+pallino blu) ed i relativi <i> metodi </i> (pallino rosso) ed infine i <i>parametri
+</i>di ogni metodo (pallino giallo).</p>
+<p>Le interfacce corrispondono ad <i>oggetti CORBA</i> che vengono registrati
+anche al Naming Service. Un oggetto CORBA è sostanzialmente un riferimento (IOR)
+che consente a chi lo possiede di richiamare metodi implementati dall'oggetto.&nbsp;</p>
+<p>Come detto premendo il
+pulsante &quot;update&quot; viene visualizzata la composizione dell'Interface Repository
+aggiornata all'istante attuale. Possiamo pensare ad esempio che ad un certo momento venga
+collegata alla rete una stampante e reso disponibile (attraverso la
+registrazione) il relativo servizio di
+stampa e che poi, in un secondo momento, la stampante venga scollegata ed il
+servizio de-registrato. Il nostro sistema può gestire tutto questo in maniera
+dinamica. In una apposita casella viene visualizzato il momento cui si riferisce
+l'ultimo update dello stato del Repository effettuato.</p>
+<p>Una volta visualizzata la struttura del Repository è possibile selezionare
+un metodo remoto da eseguire. A questo punto premendo il bottone &quot;execute&quot;
+si apre una seconda finestra che consente
+l'inserimento degli argomenti del metodo selezionato.</p>
+<p>&nbsp;La finestra è la seguente:</p>
+<p align="center"><img border="0" src="analis4.jpg" width="439" height="465"></p>
+        <p>La finestra visualizza la signature del metodo scelto da eseguire
+        sull'oggetto remoto e fornisce una casella di testo per l'inserimento in
+        sequenza del valore dei vari argomenti. Ad ogni argomento inserito si
+        preme il tasto &quot;OK&quot;; quando sono stati inseriti tutti gli argomenti il
+        tasto OK viene disabilitato e si invia la richiesta con il tasto &quot;Esegui&quot;.</p>
+        <p>Il pulsante Annulla consente di annullare la richiesta in corso.</p>
+<p>Il pulsante Ripeti, attualmente non implementato, consente la ripetizione
+        dell'ultima chiamata senza dover riselezionare il metodo e reinserire i
+        valori degli argomenti, pensando che nel frattempo sia eventualmente
+        cambiato lo stato dalla parte del server.<p>Il risultato della chiamata può essere una semplice stringa
+(o intero o booleano)&nbsp; e
+        può quindi essere visualizzato in una TextArea, ma può anche essere un
+rifermento ad oggetto, in questo caso ne viene visualizzata la struttura nell'apposito
+        pannello come si vede dalla figura seguente.</p>
+<p>&nbsp;</p>
+<div align="left">
+<!--mstheme--></font>
+<table border="1" width="814" height="388" bordercolorlight="#C0C0C0" bordercolordark="#003366">
+  <tr>
+    <td width="413" height="388"><!--mstheme--><font face="Verdana, Arial, Helvetica"><img border="0" src="analis7.jpg" width="384" height="463"><!--mstheme--></font></td>
+    <td width="385" height="388">
+      <!--mstheme--><font face="Verdana, Arial, Helvetica">
+      <p align="center"><img border="0" src="analis5.jpg" width="374" height="465"></p>
+      <!--mstheme--></font>
+    </td>
+  </tr>
+</table>
+<!--mstheme--><font face="Verdana, Arial, Helvetica">
+</div>
+<p>Nella figura a sinistra si vede come invocando il metodo <i> open</i>
+dell'interfaccia <i>AccountManager</i> nel modulo <i>BankService</i> venga
+restituito un riferimento ad un oggetto che descrive il conto appena aperto.</p>
+<p>Se tale oggetto è registrato all'Interface Repository, è possibile
+visualizzarne la struttura (ancora una volta tramite JTree) e quindi invocarne i metodi
+(in questo caso <i>balance</i> e <i> describe</i>).</p>
+<p>Nella figura a destra si vede il risultato dell'invocazione del metodo <i>
+describe</i>.</p>
+<p>In questo modo si realizza una sorta di <i> programmazione visuale</i>.</p>
+<p>Questa parte del progetto ci consente di evidenziare le forti capacità di i<i>ntrospezione</i> e di <i>dynamic
+discovery</i> di CORBA, nonché il rigido criterio di <u> separazione</u> fra
+descrizione dell'<i>interfaccia di un oggetto </i>(mantenuta nell'IR) ed <i> implementazione</i> corrispondente.</p>
+<p>L'interfaccia principale, tramite l'abilitazione del CheckBox &quot;<i>Track
+Enable</i>&quot; consente inoltre di tenere traccia delle varie operazioni effettuate
+e dei relativi risultati.</p>
+<p>I dati vengono memorizzati in un file testo il cui nome viene generato
+dinamicamente in base alla data e l'ora di avvio del client in modo da garantire
+la separazione dei dati relativi alle diverse sessioni effettuate. </p>
+<p>E' inoltre possibile visualizzare il contenuto attuale del file in
+un'opportuna finestra tramite il pulsante &quot;Show Track&quot;. La finestra
+viene aggiornata dinamicamente in seguito alle operazioni che vengono man mano effettuate.</p>
+<p align="center"><img border="0" src="analis8.jpg" width="503" height="418"></p>
+<p>La
+        finestra visualizza in forma di lista (<i>JList</i>)la sequenza di operazioni
+        effettuate evidenziandone l'istante di esecuzione, il valore assegnato
+dall'utente agli argomenti in ingresso ed il risultato ricevuto.</p>
+<p>Si può ad esempio pensare di poter selezionare alcune operazioni
+        effettuate e
+        di poterle rieseguire in maniera automatica (a questo scopo sono pensati
+        i due bottoni in fondo, attualmente non implementati).<p>&nbsp;
+<!--msthemeseparator--><p align="center"><img src="sumhorsd.gif"></p>
+<p align="center">&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<font size="2"> <a href="file:///C:/1dati/Universita/corsi/Reti_di_calc/MyProject/relazione/strumenti.htm">&lt;&lt;Previous</a>&nbsp;&nbsp;&nbsp;
+<a href="file:///C:/1dati/Universita/corsi/Reti_di_calc/MyProject/relazione/analisi2.htm">Next&gt;&gt;</a></font></p>
+<!--msthemeseparator--><p align="center"><img src="sumhorsd.gif"></p>
+&nbsp;<!--mstheme--></font>
+
+</body>
+
+</html>

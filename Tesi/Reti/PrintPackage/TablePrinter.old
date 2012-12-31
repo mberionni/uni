@@ -1,0 +1,42 @@
+import java.awt.*;
+import java.awt.print.*;
+import javax.swing.*;
+import javax.swing.table.*;
+
+public class TablePrinter implements Printable {
+
+  protected JTable table;
+
+  public TablePrinter(JTable tbl) {
+    table = tbl;
+  }
+
+  public int print(Graphics g, PageFormat pf, int index) {
+    if (index == 0) {
+      g.translate((int)(pf.getImageableX()),
+          (int)(pf.getImageableY()));
+      Graphics2D g2d = (Graphics2D)g;
+      double pageWidth = pf.getImageableWidth();
+      double pageHeight = pf.getImageableHeight();
+      double tableWidth = table.getWidth();
+      double tableHeight = table.getHeight();
+      // Find out what scale factor should be applied
+      // to make the table's width small enough to
+      // fit on the page
+      double scaleX = pageWidth / tableWidth;
+      // Now do the same for the height
+      double scaleY = pageHeight / tableHeight;
+      // Pick the smaller of the two values so that
+      // the table is as large as possible while
+      // not exceeding either the page's width or
+      // its height
+      double scaleFactor = Math.min(scaleX, scaleY);
+      // Now set the scale factor
+      g2d.scale(scaleFactor, scaleFactor);	  
+	  table.paint(g);
+      return Printable.PAGE_EXISTS;
+    }
+    return Printable.NO_SUCH_PAGE;
+  }
+
+}

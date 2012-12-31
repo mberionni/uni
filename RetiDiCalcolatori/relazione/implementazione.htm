@@ -1,0 +1,188 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="it">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta name="GENERATOR" content="Microsoft FrontPage 4.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<title>Implementazione</title>
+<meta name="Microsoft Theme" content="sumipntg 011">
+<base target="_self">
+</head>
+
+<body background="sumtextb.jpg" topmargin="20" leftmargin="30" bgcolor="#FFFFFF" text="#000066" link="#3333CC" vlink="#666699" alink="#990099">
+
+<!--mstheme--><font face="Verdana, Arial, Helvetica">
+
+<p><font color="#000080" face="Verdana" size="3">Consideriamo gli altri servizi
+(oltre al DBService) che sono stati realizzati al fine da una parte di
+verificare la effettiva funzionalità dell'interfaccia client progettata al
+punto 1, dall'altra di sperimentare le possibilità offerte da CORBA per lo
+sviluppo del <i> lato server</i>.&nbsp;</font></p>
+
+<p><font color="#000080" face="Verdana" size="3">Servizi implementati&nbsp; e relativa descrizione
+IDL&nbsp; (nei casi BankService e PrintService l'IDL è riportato solo a scopo
+descrittivo e non necessita di essere compilato):</font></p>
+
+<!--mstheme--></font>
+<!--msimagelist--><table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <li><b><font face="Verdana" size="3"><font color="#000080">BankService</font></font></b><font color="#000080" face="Verdana" size="3">:&nbsp;&nbsp;&nbsp;module BankService&nbsp;&nbsp;<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        {&nbsp;&nbsp; interface Account&nbsp;<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        {&nbsp;&nbsp;&nbsp;&nbsp; float balance ();<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        string describe ();<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        };<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        interface AccountManager&nbsp;<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        {&nbsp;&nbsp;&nbsp;&nbsp; ::BankService::Account open (in string
+        nomeAccount);<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        };<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        };&nbsp;</font></li>
+  <li><b><font face="Verdana" size="3"><font color="#000080">PrintService</font></font></b><font color="#000080" face="Verdana" size="3">:&nbsp;&nbsp;&nbsp;module PrintService&nbsp;<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        {&nbsp;&nbsp;&nbsp; interface Print&nbsp;<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        {&nbsp;&nbsp;&nbsp; boolean stampa (in string nomeFile);<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        }<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        };</font></li>
+  <li><b><font face="Verdana" size="3"><font color="#000080">ProvaService</font></font></b><font color="#000080" face="Verdana" size="3">:&nbsp;&nbsp;module ProvaService&nbsp;<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        {&nbsp;&nbsp;&nbsp; interface somma&nbsp;<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        {&nbsp;&nbsp;&nbsp; string sommaConcatena (in long add1, in long add2, in string concat);<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        long calcola (in long add1, in long add2, in long mul, in long div);<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        string concatena (in long concat1, in long concat2, in string concat3);<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        };<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        };</font></li>
+<!--msimagelist--></table>
+<!--mstheme--><font face="Verdana, Arial, Helvetica">&nbsp;
+  <p align="left"><font color="#000080" face="Verdana" size="3">La filosofia di CORBA è quella di mantenere il lato client semplice,
+  volendo con questo intendere che i clienti devono vedere gli oggetti sul
+  server come sempre attivi (running) ed in attesa di ricevere invocazioni.&nbsp;</font></p>
+  <p align="left"><font color="#000080" face="Verdana" size="3">
+  CORBA non fornisce dal lato client alcun comando per lo start-up di un oggetto
+  server. Ricade quindi sul lato server il dover fornire l'illusione che tutti
+  gli oggetti siano attivi.&nbsp;</font></p>
+  <p align="left"><font color="#000080" face="Verdana" size="3"> Attraverso il<b> </b> <i><b>POA</b>, </i>CORBA rende possibile per
+  il programmatore controllare in maniera molto fine praticamente ogni aspetto
+  del server run-time. Il POA, superando i limiti del BOA rende anche il lato
+  server portabile.</font></p>
+  <p><font color="#000080" face="Verdana" size="3">Vediamo quali sono le strade esplorate nel progetto.</font></p>
+  <p><font color="#000080" face="Verdana" size="3">I servizi <u> BankService</u> e
+  <u> PrintService</u> sono stati realizzati attraverso l'uso
+  della <i><b>DSI</b></i>  (<i>dynamic skeleton interface</i>).</font></p>
+  <p><font color="#000080" face="Verdana" size="3">La DSI fornisce un meccanismo per creare un'implementazione di un oggetto
+  che non eredita da uno skeleton generato da una precompilazione di IDL. La DSI
+  permette quindi ad un oggetto&nbsp; di ricevere richieste dai clienti, processare la
+  richiesta e ritornare il risultato al cliente senza ereditare da una classe
+  skeleton generata (nel caso del VisiBroker) dal compilatore<i> idl2java</i>.</font></p>
+  <p><font color="#000080" face="Verdana" size="3">Implementare il lato server con la DSI è ovviamente più laborioso in
+  quanto è l'oggetto che riceve la richiesta (quindi il programmatore) che deve
+  determinare qual'è l'operazione che è stata richiesta, interpretare gli argomenti
+  associati, chiamare l'opportuno metodo interno quindi impaccare il
+  risultato e rispedirlo.</font></p>
+<p><font color="#000080" face="Verdana" size="3">Dal punto di vista del client un oggetto implementato
+  attraverso la DSI si comporta in maniera identica a qualsiasi altro oggetto
+  registrato con l'ORB. I clienti quindi non sono coscienti del modo in cui è
+  implementato l'oggetto server. (Analogamente gli oggetti non sanno che la
+richiesta che gli arrivata è stata costruita dinamicamente attraverso la DII o
+compilata staticamente).</font></p>
+
+<p><font color="#000080" face="Verdana" size="3">L'uso della DSI ci ha
+quindi in questi 2 casi sollevato dal dover scrivere e precompilare del codice
+IDL (che sopra è stato riportato solo a scopo descrittivo dei servizi ma che
+non necessita di essere compilato).</font></p>
+
+<p><font color="#000080" face="Verdana" size="3">I due servizi (BankService e PrintService) sono stati
+inoltre realizzati utilizzando dei <i><b>Servant Managers</b>.</i></font></p>
+
+<p><font color="#000080" face="Verdana" size="3">Un Servant Manager consente di controllare la
+creazione, attivazione, disattivazione e distruzione degli oggetti. Un Servant Manager (associato ad un POA) consente al POA&nbsp; di
+<i> attivare oggetti su
+richiesta</i> quando il POA riceve una richiesta riferita ad un oggetto inattivo. Un
+Servant Manager è registrato con il POA come un <i> callback object</i> che significa
+che è invocato dal POA quando necessario. Ogni Servant Manager contiene due
+operazioni: la prima per trovare e ritornare un servant (<i>incarnate</i>), la seconda per
+disattivare il servant stesso (<i>etherealize</i>).</font></p>
+
+<p><font color="#000080" face="Verdana" size="3">Un Servant Manager è indispensabile nel caso di server
+che trattano un elevato numero di oggetti (persistenti e non). In questo caso attivare
+tutti gli oggetti allo start-up del server costituirebbe un overhead notevole.
+L'attivazione on-demand è quindi la soluzione ideale.&nbsp;</font></p>
+
+<p><font color="#000080" face="Verdana" size="3"> Quello che succede quando
+arriva una richiesta è che il POA va a guardare nella sua <i>Active Object Map</i> se
+è presente l'oggetto interessato dalla richiesta; se non lo trova viene
+invocato il metodo <i>incarnate</i> del ServantActivator che deve essere
+registrato con il POA e che solo adesso attiva
+effettivamente l'oggetto (servant). A questo punto il servant attivato viene aggiunto all'Active
+Object Map. Future richieste andranno attraverso il servant appena creato
+fintanto che il servant stesso rimane in memoria.</font></p>
+
+<p><font color="#000080" face="Verdana" size="3">Nel nostro esempio una volta che il servant è stato
+creato viene avviato un thread in background che disattiva il servant stesso
+dopo 10 secondi (metodo <i>etherealize</i>), realizzando così una sorta di
+garbage collection.</font></p>
+
+<p><font color="#000080" face="Verdana" size="3">L'utilizzo di queste strategie nel progetto ha il solo
+scopo di esplorare strade diverse tra le molteplici che ci presenta CORBA in
+quanto nel nostro caso non abbiamo un numero elevato di oggetti e quindi
+andrebbe benissimo anche un'attivazione allo start-up del server così come si
+potrebbe tranquillamente scrivere e compilare codice IDL invece di utilizzare la
+DSI. Queste strade alternative&nbsp; sono
+state infatti considerate nella realizzazione dei servizi ProvaService e
+DBService.</font></p>
+
+<p><font color="#000080" face="Verdana" size="3">In questi casi quindi non viene
+usato un Servant Manager, ma si hanno servizi che eseguono in
+maniera continuativa dallo start-up del server in poi.</font></p>
+
+<p><font color="#000080" face="Verdana" size="3">Inoltre, per questi due servizi non è stata usata la
+DSI ma si è scritto del codice IDL che poi è stato compilato tramite il
+compilatore <i>idl2java </i>del VisiBroker che ci ha generato le classi che
+effettuano per noi le operazioni di più basso livello (marshaling dei
+parametri, ...). Viene quindi in questo modo fornito da CORBA un <i> livello di astrazione che fa sembrare le chiamate di metodi remoti
+come chiamate ordinarie</i>. Il compilatore fornisce anche il type checking. La
+programmazione risulta perciò più semplice e il programmatore può
+concentrarsi su problemi di più alto livello. Si ha cioè un trade-off tra
+semplicità di programmazione e flessibilità.</font></p>
+
+<p><font color="#000080" face="Verdana" size="3">Descriviamo brevemente più nei
+dettagli i servizi disponibili.</font></p>
+<p><font color="#000080" face="Verdana" size="3">Il servizio <i>BankService </i>fornisce
+il metodo <i>open </i>che data una stringa costruisce e restituisce un oggetto
+Account che rappresenta un conto corrente. Su tale oggetto restituito dal metodo
+<i>
+open</i> e visualizzato dalla nostra interfaccia grafica è possibile invocare i
+metodi <i>balance</i> e <i>describe </i>che forniscono rispettivamente il saldo
+del conto e una sua descrizione testuale.</font></p>
+<p><font color="#000080" face="Verdana" size="3">Il servizio <i>PrintService </i>fornisce
+un metodo<i> stampa </i>che dato una stringa con il path di un file di testo,
+ricerca tale file e se lo trova lo manda in&nbsp; stampa</font>.</p>
+<p><font color="#000080" face="Verdana" size="3">Il servizio ProvaService fornisce del semplici servizi
+di concatenazione di stringhe ed operazioni fra interi ed ha il solo scopo di
+mettere alla prova il meccanismo di creazione dinamica della richiesta con
+numero e tipo di argomenti variabile.</font></p>
+
+<p>&nbsp;</p>
+<!--msthemeseparator--><p align="center"><img src="sumhorsa.gif"></p>
+<p align="center"><font size="2"><a href="progetto2.htm">&lt;&lt;Previous</a>&nbsp;&nbsp;
+<a href="verifica.htm">Next&gt;&gt;</a></font></p>
+<!--msthemeseparator--><p align="center"><img src="sumhorsa.gif"></p>
+<!--mstheme--></font>
+
+</body>
+
+</html>

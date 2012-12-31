@@ -1,0 +1,7 @@
+module ProvaService {
+   interface somma    {
+         string sommaConcatena(in long add1, in long add2, in string concat);
+	   string concatena(in long concat1, in long concat2, in string concat3);
+         long calcola(in long add1, in long add2, in long mul, in long div);
+    };			
+};

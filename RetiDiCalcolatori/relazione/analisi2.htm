@@ -1,0 +1,88 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="it">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta name="GENERATOR" content="Microsoft FrontPage 4.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<title>Analisi - parte II</title>
+<meta name="Microsoft Theme" content="sumipntg 001, default">
+<meta name="Microsoft Border" content="tlb, default">
+<base target="_parent">
+</head>
+
+<body topmargin="30" leftmargin="35" background="sumtextb.jpg" bgcolor="#FFFFFF" text="#000066" link="#3333CC" vlink="#666699" alink="#990099">
+
+<!--mstheme--><font face="Verdana, Arial, Helvetica">
+
+<p>La seconda parte del progetto è consistita nella realizzazione di un
+servizio CORBA che fornisse accesso in lettura ad un database.</p>
+
+<p>Il database viene per semplicità realizzato con un file testo in cui sono
+memorizzate corrispondenze del tipo chiave-valore.</p>
+<p>Il servizio viene implementato sfruttando <i> <b>partizionamento</b> </i> e<i> <b>replicazione</b>
+</i>
+dei dati su server diversi.</p>
+<p>Il&nbsp; servizio deve poter essere registrato ed utilizzato attraverso
+l'interfaccia analizzata al punto precedente.</p>
+<p>Dal lato client non c'è nessuna coscienza del fatto che la risposta venga da un unico server o che
+essa sia il risultato del <i> coordinamento</i> di un <i> cluster di servitori</i>.</p>
+<p>Il client vede un'interfaccia ma non ha conoscenza di come essa venga in
+realtà implementata (<i>trasparenza e separazione di interfaccia da
+implementazione</i>).</p>
+<p>Si realizza l'<i>astrazione di risorsa unica</i>.</p>
+<p>I vari server che forniscono il servizio costituiscono un <i>cluster. </i>L'idea
+è quella di permettere che il numero di server costituenti il cluster non sia
+prefissato a priori; un server potrà quindi aggiungersi in maniera dinamica al
+cluster fornendo dati più aggiornati e/o ulteriori dati.</p>
+<p>L'unica operazione disponibile per un cliente è quella di <i> lettura</i> di una
+entry della tabella, dato in ingresso un valore di chiave.</p>
+<p>Ogni server possiede localmente una tabella che contiene un sottoinsieme
+delle entry complessive gestite dal sistema.</p>
+<p align="center"><img border="0" src="analis6.jpg" width="458" height="373"></p>
+<p>Si vuole anche realizzare un meccanismo di<i>  <b> caching</b> </i>per cui se il
+client effettua una richiesta di lettura ad un dato ad un server che non lo
+possiede quest'ultimo lo cerca negli altri server e se tale dato esiste in
+almeno un agente lo memorizza nella propria tabella (che mantiene in memoria).
+Se le richieste sono molte e sempre diverse il meccanismo può portare alla
+replicazione della maggior parte delle entry su tutti i server. Più
+verosimilmente la maggior parte delle richieste riguarderà un'insieme ristretto
+delle entry; in questo caso il meccanismo di caching consente risposte più
+veloce (si evita di dover interrogare altri server).</p>
+<p>La replicazione e il partizionamento sono da noi introdotti per raggiungere
+obiettivi di:</p>
+<!--mstheme--></font>
+<!--msthemelist--><table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <!--msthemelist--><tr>
+    <!--msthemelist--><td valign="baseline" width="42"><img src="sumbul1d.gif" width="15" height="15" hspace="13"></td>
+    <td valign="top" width="100%"><!--mstheme--><font face="Verdana, Arial, Helvetica"><i><b>load
+      balancing</b></i><!--mstheme--></font><!--msthemelist--></td>
+  </tr>
+  <!--msthemelist--><tr>
+    <!--msthemelist--><td valign="baseline" width="42"><img src="sumbul1d.gif" width="15" height="15" hspace="13"></td>
+    <td valign="top" width="100%"><!--mstheme--><font face="Verdana, Arial, Helvetica"><i><b>fault
+      tolerance</b></i><!--mstheme--></font><!--msthemelist--></td>
+  </tr>
+<!--msthemelist--></table>
+<!--mstheme--><font face="Verdana, Arial, Helvetica">
+<p>E' necessario inoltre realizzare un meccanismo per cui i dati mantenuti in server diversi
+siano sempre consistenti fra loro (cioè non esistano server che a uno stesso
+valore di chiave associano valori differenti).</p>
+<p>Il <i>protocollo </i>realizzato è<i> indipendente dal grado di replicazione</i>
+(che è, in generale, variabile dinamicamente).</p>
+<p>Se un server si guasta semplicemente i suoi dati non saranno più disponibili. Può capitare che tale server
+abbia dati comunque mantenuti in
+altri server o può capitare che tale server abbia dei dati non posseduti da
+nessun altro server. Nel primo caso non si ha perdita di informazione, nel
+secondo tali dati sono non disponibili finché il
+server non viene riattivato.</p>
+&nbsp;
+<!--msthemeseparator--><p align="center"><img src="sumhorsd.gif"></p>
+<p align="center"><font color="#808000" size="2"><a href="file:///C:/1dati/Universita/corsi/Reti_di_calc/MyProject/relazione/analisi1.htm" target="_self">&lt;&lt;Previous&nbsp;</a>&nbsp;&nbsp;
+<a href="file:///C:/1dati/Universita/corsi/Reti_di_calc/MyProject/relazione/progetto1.htm" target="_self">Next&gt;&gt;</a></font></p>
+<!--msthemeseparator--><p align="center"><img src="sumhorsd.gif"></p>
+<!--mstheme--></font>
+
+</body>
+
+</html>

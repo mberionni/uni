@@ -1,0 +1,156 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="it">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta name="GENERATOR" content="Microsoft FrontPage 4.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<title>Progetto - parte I</title>
+<meta name="Microsoft Theme" content="sumipntg 001, default">
+<meta name="Microsoft Border" content="tlb, default">
+<base target="_self">
+</head>
+
+<body background="sumtextb.jpg" bgcolor="#FFFFFF" text="#000066" link="#3333CC" vlink="#666699" alink="#990099" topmargin="20" leftmargin="30">
+
+<!--mstheme--><font face="Verdana, Arial, Helvetica"><p>Il progetto dell'interfaccia cliente prevede la necessità di consentire a
+dei servizi di registrarsi dinamicamente all'Interface Repository, rendendo
+così disponibili tali servizi agli utenti.</p>
+<p>Ovviamente nel codice non c'è nessuna conoscenza
+statica dei servizi che si registreranno rendendosi disponibili.</p>
+<p>Questo è reso possibile dalla <i>Dynamic Invocation Interface</i> di CORBA che consente la costruzione a
+run-time di richieste per oggetti CORBA.</p>
+<p>Per adesso si sono previsti i casi in cui gli argomenti in ingresso dei
+metodi messi a disposizione dagli oggetti siano dei
+tipi semplici cioè numeri, stringhe, valori booleani escludendo così i
+tipi strutturati (array,...). Un estensione che consideri anche questi non pone però
+problemi concettuali e non è stata sviluppata per ragioni di tempo,
+considerando anche il fatto che lo scopo del progetto non è quello di realizzare un
+prodotto.<p>I servizi possono registrarsi all'Interface Repository (IR) fondamentalmente in 2
+modi diversi:</p>
+<!--mstheme--></font>
+<!--msthemelist--><table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <!--msthemelist--><tr>
+    <!--msthemelist--><td valign="baseline" width="42"><img src="sumbul1d.gif" width="15" height="15" hspace="13"></td>
+    <td valign="top" width="100%"><!--mstheme--><font face="Verdana, Arial, Helvetica">Il primo modo consiste nello scrivere il codice <i>IDL</i> che
+descrive il servizio quindi
+nell'invocare lo strumento <i>idl2ir </i>di VisiBroker che popola l'IR con gli
+oggetti definiti nel sorgente IDL.&nbsp;<!--mstheme--></font><!--msthemelist--></td>
+  </tr>
+  <!--msthemelist--><tr>
+    <!--msthemelist--><td valign="baseline" width="42"><img src="sumbul1d.gif" width="15" height="15" hspace="13"></td>
+    <td valign="top" width="100%"><!--mstheme--><font face="Verdana, Arial, Helvetica"> Il secondo modo è quello di fare la
+registrazione direttamente da programma. Questa è stata la soluzione che è
+      stata adottata, realizzando quindi delle classi apposite per la registrazione dei
+servizi.<!--mstheme--></font><!--msthemelist--></td>
+  </tr>
+<!--msthemelist--></table>
+<!--mstheme--><font face="Verdana, Arial, Helvetica">
+<p>Contemporaneamente i servizi (o meglio gli oggetti che li implementano) si registrano anche al <i>Naming Service</i>
+(NS) consentendo così poi al cliente di poter recuperare i relativi riferimenti.
+Questa registrazione può essere fatta solo via programma.</p>
+<p>Una volta che il servizio si è registrato deve essere avviato il server che implementa tale servizio e che si mette in
+ascolto di eventuali richieste da parte di un cliente ( <i> orb.run()</i> ).</p>
+<p>A questo punto l'utente può selezionare dal JTree che visualizza il Repository il metodo che gli interessa e premere &quot;Execute&quot;.&nbsp;</p>
+<p> In
+conseguenza di ciò la nostra applicazione recupera l'oggetto associato al nodo
+del tree selezionato. Questo oggetto contiene sostanzialmente la struttura
+dell'interfaccia del metodo. E' quindi possibile consentire all'utente
+(attraverso una nuova finestra) di
+inserire il valore degli argomenti d ingresso, indicando il nome e il tipo dei parametri
+necessari. Si suppone che l'utente inserisca i valori in maniera corretta,
+rispettando il tipo dei parametri. Un controllo non introduce problemi concettuali, ma non è stato fatto per
+ragioni di tempo.</p>
+<p>A questo punto, inseriti tutti gli argomenti, premendo il tasto &quot;Esegui&quot;
+avviene la ricerca nel Naming Service del riferimento all'oggetto corrispondente.
+Esiste un &quot;hand-shake&quot; secondo il quale l'oggetto deve registrarsi al
+NS fornendo per il binding il nome della sua interfaccia così come
+è nell'IDL o come è stato registrato via programma nell'IR. Se l'oggetto si
+registra al NS con altro nome il suo riferimento non potrà essere recuperato e
+verrà lanciata un'eccezione CORBA OBJECT_NOT_EXISTS.</p>
+<p>Il meccanismo di registrazione di un oggetto e di recupero del riferimento è
+mostrato nella seguente figura:</p>
+<p align="center"><img border="0" src="images/recuperoRif.jpg" width="588" height="486"></p>
+<p align="left">Come si vede prima avviene la registrazione del modulo all'IR,
+quindi l'oggetto (definito dal nome dell'interfaccia) di nome somma si registra
+al Naming Service.</p>
+<p align="left">Nel momento in cui arriva una richiesta cliente per il metodo
+calcola dell'interfaccia somma si va nell'IR a recuperare la descrizione del
+metodo che consentirà la costruzione dinamica della richiesta, quindi si va nel
+Naming Service a recuperare il riferimento per l'oggetto che implementa il
+metodo calcola. Si &quot;entra&quot; quindi nel NS con il nome dell'interfaccia
+(somma in questo caso).</p>
+<p>Una volta recuperato correttamente il riferimento avviene la costruzione
+dinamica della richiesta attraverso i metodi della DII di CORBA sfruttando i
+valori dei parametri precedentemente inseriti dall'utente. Come detto non c'è
+nessuna conoscenza a compile-time delle richieste che verranno costruite.&nbsp;</p>
+<p>
+Ovviamente la costruzione dinamica della richiesta comporta una programmazione
+più complessa ed a basso livello ed un overhead maggiore rispetto al caso statico. Esiste
+perciò un <i> trade-off
+fra complessità di programmazione, performance, ed aumento di flessibilità.</i></p>
+<p>A questo punto viene inviata la richiesta. Il client non ha nessuna
+visibilità di quello che succede dopo l'invio dal lato server. Questo significa
+che il client non sa se il lato server è implementato tramite DSI o sfrutta la
+precompilazione di IDL e non sa ad esempio se il servizio è realizzato da un
+unico server o piuttosto da un cluster di server coordinati.</p>
+<p>Semplicemente il client invia la richiesta ed attende la risposta. In questo
+caso ho scelto la semantica&nbsp; <i>sincrona </i>attraverso l'uso di <i>invoke </i>
+(il cliente attende l'arrivo della risposta)<i>.</i>
+Sono possibili anche semantiche deffered synchronous (<i>send-deferred) </i>e di
+tipo oneway (<i>send_oneway</i>).</p>
+<p>Quindi, se tutto è andato bene dal lato server, il client estrae il risultato.</p>
+<p>Questo può in generale essere un tipo semplice (stringa, intero, booleano)
+oppure essere un riferimento ad un oggetto remoto.</p>
+<p>In questo secondo caso, di questo oggetto possiamo voler invocare i metodi. Ciò sarà
+possibile se esso è stato registrato all'IR; in questo caso infatti
+sarà possibile recuperarne l'interfaccia (metodo <i>get_interface_def</i>), quindi visualizzare la struttura dell'oggetto (sempre sottoforma di JTree) ed
+infine costruire la chiamata ad un suo metodo dinamicamente, con il meccanismo
+usato anche in
+precedenza. Non è invece ovviamente necessaria la registrazione al Naming
+Service in quanto il riferimento ci è stato restituito direttamente. Se
+l'oggetto non è registrato all'IR non sappiamo quale è l'interfaccia che&nbsp;
+mette a disposizione e
+quindi nessuna azione su di esso è possibile.</p>
+<p>Lo sviluppo di questa parte del progetto è stato fatto non utilizzando
+metodi specifici definiti dal VisiBroker (package com.inprise.visibroker), in
+modo da consentirne il funzionamento anche con altre implementazioni dell'ORB.
+Sarebbe ad esempio stato possibile evitare l'uso del Naming Service utilizzando
+lo Smart Agent di VisiBroker (in pariticolare il metodo <i>bind </i>consente di
+reperire direttamente il riferimento ad un oggetto dato il nome). Ciò ci
+avrebbe però legato in modo forte all'uso di VisiBroker e per slegarci da
+questo sarebbe eventualmente stata necessaria una riscrittura completa di molte
+parti di codice.</p>
+<p>C'è da dire che lo sviluppo della fase di registrazione fatta via programma
+ha comportato delle difficoltà. Si tratta sostanzialmente di individuare l'IR,
+quindi di creare in esso il modulo, l'interfaccia che rappresenta l'oggetto ed i
+suoi metodi. La creazione dei metodi è piuttosto laboriosa necessitando della
+creazione manuale di tutti i parametri in ingresso ed in uscita e del loro tipo.
+Per fare questo è necessario l'utilizzo di metodi che non erano documentati né nella guida
+fornita con il VisiBroker, né nelle API in cui era riportata la sola
+interfaccia del metodo, né ad esempio nel libro &quot;Client/Server programming&nbsp; with
+Java and Corba&quot; disponibile in facoltà. Tale documentazione si trova
+probabilmente solo in libri più specifici dedicati al VisiBroker e non
+disponibili nelle librerie se non su ordinazione. Per capire il funzionamento di
+molti metodi è stato quindi necessario eseguire delle prove.</p>
+<p>Sono state inoltre sviluppate anche funzioni di cancellazione della
+registrazione nell'IR e nel Naming Service. In questo modo
+quando un servizio non è più disponibile può deregistrarsi. Al successivo
+update effettuato dall'utente tali servizi non compariranno più fra quelli
+disponibili.</p>
+<p>Può succedere quindi che un cliente selezioni un metodo che non esiste poiché
+è stata fatta la deregistrazione, ma non è stato fatto l'update. In
+questo caso viene visualizzato un messaggio di warning che spiega tale fatto e
+viene quindi automaticamente avviato l'update. Il cliente avrà ora disponibili
+nel Jtree solo oggetti effettivamente presenti.</p>
+<p>&nbsp;</p>
+<!--msthemeseparator--><p align="center"><img src="sumhorsd.gif"></p>
+<p align="center"><font size="2"><a href="file:///C:/1dati/Universita/corsi/Reti_di_calc/MyProject/relazione/analisi2.htm" target="_self">&lt;&lt;Previous
+</a>&nbsp;&nbsp;&nbsp; <a href="progetto2.htm">Next&gt;&gt;</a></font></p>
+<!--msthemeseparator--><p align="center"><img src="sumhorsd.gif"></p>
+<p align="center">&nbsp;</p>
+<!--mstheme--></font>
+
+</body>
+
+</html>

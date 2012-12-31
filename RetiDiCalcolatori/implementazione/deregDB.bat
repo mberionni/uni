@@ -1,0 +1,1 @@
+vbj -DORBInitRef=NameService=corbaloc::localhost:9999/NameService Reti.deregDB

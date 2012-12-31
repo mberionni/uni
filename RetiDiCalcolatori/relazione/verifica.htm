@@ -1,0 +1,119 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="it">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta name="GENERATOR" content="Microsoft FrontPage 4.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<title>Verifica</title>
+<meta name="Microsoft Theme" content="sumipntg 011">
+</head>
+
+<body topmargin="20" leftmargin="30" background="sumtextb.jpg" bgcolor="#FFFFFF" text="#000066" link="#3333CC" vlink="#666699" alink="#990099">
+
+<!--mstheme--><font face="Verdana, Arial, Helvetica">
+
+<p>Si sono eseguite numerose verifiche durante lo sviluppo dell'applicazione
+principale e dei vari servizi che venivano via via implementati.</p>
+<p>La fase di sviluppo è stata realizzata su un solo PC, quindi le prime
+verifiche sono state fatte in locale.</p>
+<p>Successivamente l'applicazione è stata installata al LAB2 dove si sono
+eseguite delle verifiche dell'effettivo funzionamento in rete usando 3 stazioni.</p>
+<p>Questo ha permesso di verificare il funzionamento variando l'allocazione del
+Name Server e quella degli altri server in modi diversi.</p>
+<p>Particolarmente significativa è stata anche la verifica del funzionamento del
+servizio DBService: si sono fatti partire vari server (che dinamicamente
+formavano il cluster) su stazioni diverse, verificando il corretto funzionamento
+del protocollo di coordinamento.</p>
+<p>Nelle seguenti figure si mostra un esempio di esecuzione del DBService (che
+evidenzia le diverse fasi del protocollo):</p>
+<p>&nbsp;</p>
+<div align="right">
+  
+<!--mstheme--></font>
+  
+         <table border="0" width="888" height="8" cellspacing="0" cellpadding="6">
+            <tr>
+              <td width="489" height="8"><!--mstheme--><font face="Verdana, Arial, Helvetica"><img border="0" src="images/DBServer1.jpg" width="487" height="689"><!--mstheme--></font></td>
+              <td width="383" height="8"><!--mstheme--><font face="Verdana, Arial, Helvetica">Come si vede c'è una fase iniziale di
+                unBind nella quale viene eliminato dal cluster il Server1 che è
+                precedentemente caduto.
+                <p>Non ci sono ora altri server attivi nel sistema.</p>
+                <p>Inizia quindi una fase di update nulla in quanto il Server1
+                è l'unico attualmente in esecuzione.</p>
+                <p>Viene poi lanciato il Server2 che dopo aver eseguito la sua
+                fase di unbind, esegue la fase di update. Si collega quindi con
+                il Server1 e verifica l'esistenza di chiavi identiche. In questo
+                caso i due server non hanno chiavi in comune.</p>
+                <p>Viene poi lanciato il Server3. In questo caso il Server3
+                aggiorna l'entry Michele del Server1 da 123 a 9.</p>
+                <p>Vediamo infine le richieste per le chiavi Stefano e
+                Michele che vengono da altri server in fase di ricerca. Queste
+                richieste di lettura sono quindi conseguenti a query eseguite
+                dall'utente ad altri server. Questi non avendo nella loro
+                tabella in memoria locale il valore richiesto lo hanno ricercato
+                in altri server.<!--mstheme--></font></td>
+            </tr>
+          </table>
+   
+      
+<!--mstheme--><font face="Verdana, Arial, Helvetica">
+   
+      
+</div>
+<p>&nbsp;</p>
+<div align="left">
+<!--mstheme--></font>
+  <table border="0" width="870" height="629" cellpadding="6" cellspacing="0">
+    <tr>
+      <td width="488" height="629"><!--mstheme--><font face="Verdana, Arial, Helvetica"><img border="0" src="images/DBServer2.jpg" width="538" height="739"><!--mstheme--></font></td>
+      <td width="366" height="629"><!--mstheme--><font face="Verdana, Arial, Helvetica">&nbsp;
+        <p>In questa figura si evidenza la fase di update del Server2 verso il
+        Server1. In questo caso i due server non avevano nessun valore in
+        comune.</p>
+        <p>Si vedono poi le richieste di lettura provenienti dal Server3 in fase
+        di update. In questo caso viene aggiornato il valore Pippo da 2 a 1.</p>
+        <p>Si vede poi come il server riceva una richiesta da un altro server in
+        fase di ricerca per la chiave Stefano. Tale entry non è però presente
+        nemmeno in Server2.<p>Il server riceve poi direttamente una richiesta utente per la chiave
+        Michele. Poiché tale chiave non è presente nel server esso si collega
+        con gli altri del cluster. In questo caso il valore viene recuperato dal
+        Server1 ed aggiunto in cache.<!--mstheme--></font></td>
+    </tr>
+  </table>
+<!--mstheme--><font face="Verdana, Arial, Helvetica">
+</div>
+<p>&nbsp;</p>
+<div align="right">
+<!--mstheme--></font>
+  <table border="0" width="864" height="183" cellspacing="0" cellpadding="6">
+    <tr>
+      <td width="456" height="183"><!--mstheme--><font face="Verdana, Arial, Helvetica"><img border="0" src="images/DBServer3.jpg" width="600" height="746"><!--mstheme--></font></td>
+      <td width="392" height="183"><!--mstheme--><font face="Verdana, Arial, Helvetica">In
+        questa immagine si vede la fase di update dei Server2 e Server1 con
+        aggiornamento delle chiavi Michele (da 123 a 9) e Pippo (da 2 a 1).
+        <p>Al server giunge poi direttamente una richiesta utente per la chiave
+        Stefano. Ricerca quindi tale valore, non presente localmente, negli
+        altri server del cluster, prima in Server2 con esito negativo, poi in
+        Server1 con esito positivo. L'entry (Stefano, 11) viene aggiunta nella
+        cache locale.</p>
+        <p>Alla successiva richiesta della chiave Stefano il server è in grado
+        di rispondere direttamente riducendo così i tempi di risposta
+        sperimentati dal cliente (che non ha coscienza di come viene
+        effettivamente recuperato il valore).<!--mstheme--></font></td>
+    </tr>
+  </table>
+<!--mstheme--><font face="Verdana, Arial, Helvetica">
+</div>
+
+<p>&nbsp;</p>
+<!--msthemeseparator--><p align="center"><img src="sumhorsa.gif"></p>
+<p align="center"><font size="2"><a href="file:///C:/1dati/Universita/corsi/Reti_di_calc/MyProject/relazione/implementazione.htm">&lt;&lt;Previous</a>&nbsp;&nbsp;
+<a href="conclusioni.htm">Next&gt;&gt;</a></font></p>
+<!--msthemeseparator--><p align="center"><img src="sumhorsa.gif"></p>
+<p align="center">&nbsp;</p>
+<!--mstheme--></font>
+
+</body>
+
+</html>

@@ -1,0 +1,75 @@
+- possibilità di fare debug con jbuilder4
+
+
+interfaccia cliente che permette di accedere ai servizi che sono registrati
+all'interface repository.
+I servizi devono anche registrarsi al naming service per permettere di
+recuperare un riferimento che li individui.
+i servizi si registrano in maniera dinamica, cioè a run-time, all'interface
+repository.
+(c'è ovviamente anche la possibilità di deregistrare un servizio).
+Il cliente può fare update della situazione oppure si può pensare di lanciare
+un thread ogni tot tempo che faccia automaticamente update.
+Una volta che il cliente vede l'interface repository può selezionare un
+servizio da eseguire.
+Quindi un riferimento all'oggetto che implementa il servizio viene 
+recuperato dal naming service.
+A questo punto si apre una finestra che consente l'inserimento dei valori degli
+argomenti dei metodi selezionati.
+Non c'è nessuna conoscenza statica di quali sono i servizi che si registrano
+all'interface rep.
+Il tutto è stato finora provato solo per metodi con argomenti di tipo intero,
+stringa, booleano.
+Non ci sono problemi concettuali per una estensione che supporti qualsiasi tipo.
+Durante l'inserimento degli argomenti avviene la costruzione della richiesta
+tramite la DII.
+Quindi viene inviata la richiesta.
+Per evitare di dover scrivere e compilare IDL alcuni servizi (BankService e
+PrintService) sono stati realizzati attraverso la DSI.
+Questi fanno anche uso di un servant manager, che è utile nel caso
+server chelavorano con un grande numero di transient objects.
+Gli oggetti vengono attivati solo su richiesta.
+Altri invece possono far ricorso all'IDL lavorando quindi in maniera statica.
+Questo anche per esplorare le diverse possibilità offerte da CORBA.
+Una volta inviata la richiesta, se non ci sono problemi, viene ritornata
+la risposta che può ovviamente essere di qualsiasi tipo e cioè un intero,
+una stringa, un booleano, ma anche un oggetto.
+In questo caso viene visualizzata attraverso un jtree la struttura dell'oggetto.
+Se l'oggetto è registrato al repository è anche possibile eseguire dei suoi
+metodi. Il tutto sempre in maniera dinamica.
+E' inoltre disponibile anche la possibilità di tenere traccia delle operazioni
+effettuate, cioè dei metodi invocati e delle risposte ricevute, attraverso la
+scrittura a run time di un file di log.
+E' anche possibile visualizzare in una finestra tale file.
+Si può ad esempio pensare di permettere in un futuro di selezionare alcune operazioni
+già effettuate e di rieseguirle in maniera automatica (pensando che lo stato dalla
+parte del server cambi).
+
+Come detto i servizi possono essere realizzati in qualsiasi modo.
+Si può ad esempio pensare alla realizzazione di un servizio che fornisca
+accesso ai valori memorizzati in una tabella implementata in maniera
+replicata e partizionata.
+Si prevede la sola operazione di lettura della tabella.
+Ciò consente di introdurre tolleranza ai guasti (failover).
+L'idea è quella che i dati della tabella sono posseduti da più server,
+in numero non prefissato a priori. Ogni server possiede una partizione
+dei dati. I dati sono anche replicati nel senso che più server
+possono contenere una stessa entry della tabella.
+Si deve garantire consistenza.
+I server che possiedono questi dati definiscono un cluster.
+Altri server possono aggiungersi in maniera dinamica al cluster.
+Quando un server si aggiunge si assume che i suoi dati siano i più
+aggiornati.
+Quindi esso si collega con gli altri server ed eventualmente aggiorna i
+valori posseduti da altri server.
+Il visibroker supporta l'esistenza di cluster.
+Egli è quindi in grado, di ridirigere la richiesta su un server attivo
+del cluster.
+Quando ad un server arriva una richiesta se il valore è nella sua tabella
+allora lo restituisce subito altrimenti avanza una richiesta agli altri
+server del cluster.
+E' anche possibile che nessun server attivo abbia tale valore.
+Se un server ce l'ha tale valore viene ritornato al server cui era
+arrivata la richiesta iniziale che lo aggiunge alla sua tabella
+memorizzandolo in cache (meccanismo di caching).
+

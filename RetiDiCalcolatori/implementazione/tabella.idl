@@ -1,0 +1,8 @@
+module DBService
+{   interface tabella
+    {    string leggi(in string chiave);
+	   void update(in string chiave, in string valore);       
+	   attribute boolean faseRicerca;
+	   attribute boolean faseUpdate; 	
+    };			
+};

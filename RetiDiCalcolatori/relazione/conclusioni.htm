@@ -1,0 +1,72 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta name="GENERATOR" content="Microsoft FrontPage 4.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<title>conclusioni</title>
+<base target="_self">
+<meta name="Microsoft Theme" content="sumipntg 011">
+</head>
+
+<body topmargin="20" leftmargin="30" background="sumtextb.jpg" bgcolor="#FFFFFF" text="#000066" link="#3333CC" vlink="#666699" alink="#990099">
+
+<!--mstheme--><font face="Verdana, Arial, Helvetica">
+<p>La realizzazione del progetto ha consentito lo studio e l'approfondimento di
+CORBA in molti dei suoi molteplici aspetti, consentendo di valutarne l'impatto
+dell'uso nella progettazione di sistemi distribuiti.</p>
+<p>Si è visto come CORBA costituisca uno strato di <i>middleware</i> che
+consente al programmatore di concentrarsi sui problemi di alto livello lasciando
+la parte di comunicazione al supporto dell'ORB. CORBA si distingue per la sua
+estrema flessibilità che consente l'implementazione delle semantiche più
+diverse. CORBA consente di risolvere con facilità problemi che altrimenti
+necessiterebbero implementazioni molto articolate. Si sono apprezzate in
+particolare le caratteristiche di separazione dell'implementazione di un oggetto
+dalla sua interfaccia, le possibilità di introspezione degli oggetti CORBA e le
+potenzialità di dynamic discovery degli oggetti e di costruzione dinamica delle
+richieste (DII ed anche DSI). Tutto ciò è collegato anche con la trasparenza che
+CORBA fornisce al client che non ha assolutamente coscienza della allocazione e
+della implementazione degli oggetti server che utilizza. Inoltre si apprezzano
+le caratteristiche di apertura, portabilità ed interoperabilità (grazie anche
+all'IDL) di CORBA.</p>
+<p>Il progetto ha dimostrato anche come il VisiBroker possa supportarci anche
+nella definizione di un servizio che supporti caratteristiche di fault-tolerance
+e load-balancing. Il VisiBroker supporta infatti il concetto di cluster,
+permettendo il &quot;multi-binding&quot; ed è in grado di fare autonomamente il
+&quot;rebind&quot; nel caso incontri un server caduto.<span style="font-family:Verdana">
+Se così non fosse stato, sarebbe stato il programmatore a dover gestire tali
+meccanismi.<o:p>
+</o:p>
+</span></p>
+<p>Il punto debole dell'intero sistema si può probabilmente individuare nel
+Name server che è indispensabile al funzionamento del tutto e che è realizzato
+in maniera centralizzata. Se cade quindi, non è più possibile lavorare fino a
+che non viene ripristinato. Per risolvere questo problema si potrebbe anche in
+questo caso pensare di utilizzare delle funzionalità di fail-over fornite dal
+VisiBroker che ci consentono anche di definire un Name server slave. Nel caso di
+fallimento del master il VisiBroker si rivolge in maniera trasparente allo
+slave: i clienti non si accorgono del problema in corso e possono continuare
+tranquillamente a lavorare.</p>
+<p>Come detto inoltre i maggiori problemi che si sono incontrati durante il
+progetto e l'implementazione sono dovuti alla incompletezza della documentazione
+disponibile. Una documentazione più dettagliata è forse disponibile solo in
+libri che si rivolgono specificatamente ad una particolare implementazione dell'ORB.</p>
+<p>Alcune difficoltà si avevano nel capire gli errori che venivano generati
+nell'uso delle funzioni CORBA, se questi non erano spiegati nella
+documentazione. L'ORB infatti non è open source e quindi non è possibile
+seguire l'esecuzioni di tali funzioni.&nbsp;</p>
+<p>Altre difficoltà si sono avute nel capire il funzionamento di alcuni metodi
+anch'essi scarsamente documentati.</p>
+<p>Tutti questi problemi sono stati risolti solo eseguendo ripetute prove.</p>
+<p>Queste carenze sono dovute&nbsp; probabilmente al fatto che la tecnologia
+utilizzata è ancora in fase di sviluppo ed assestamento.</p>
+<p>&nbsp;</p>
+<!--msthemeseparator--><p align="center"><img src="sumhorsa.gif"></p>
+<p align="center"><font size="2"><a href="file:///C:/1dati/Universita/corsi/Reti_di_calc/MyProject/relazione/verifica.htm">&lt;&lt;Previous</a>&nbsp;&nbsp;
+<a href="esecuzione.htm">Next&gt;&gt;</a></font></p>
+<!--msthemeseparator--><p align="center"><img src="sumhorsa.gif"></p>
+<!--mstheme--></font>
+
+</body>
+
+</html>
